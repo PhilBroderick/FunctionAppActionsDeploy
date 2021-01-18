@@ -31,12 +31,12 @@ jobs:
       - name: Test with coverage
         run: dotnet test --no-build --verbosity normal
       - name: Publish
-        run: dotnet publish -c Release -o "./publish"
+        run: dotnet publish -c Release -o ${{ env.FUNCTIONAPP_PACKAGE_PATH }}
       - name: Archive publish artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: publish
-          path: './publish'
+          name: function
+          path: ${{ env.FUNCTIONAPP_PACKAGE_PATH }}
           
   deploy:
 
@@ -45,13 +45,14 @@ jobs:
     steps:
       - uses: actions/download-artifact@v2
         with:
-          name: publish
+          name: function
+          path: ${{ env.FUNCTIONAPP_PACKAGE_PATH }}
       
       - name: Publish Azure Function
         uses: azure/functions-action@v1
         with:
           app-name: ${{ env.FUNCTIONAPP_NAME }}
-          package: 'publish'
+          package: ${{ env.FUNCTIONAPP_PACKAGE_PATH }}
           publish-profile: ${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE }}
     
     

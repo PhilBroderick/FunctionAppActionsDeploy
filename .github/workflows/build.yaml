@@ -53,6 +53,5 @@ jobs:
         with:
           app-name: ${{ env.FUNCTIONAPP_NAME }}
           package: ${{ env.FUNCTIONAPP_PACKAGE_PATH }}
-          publish-profile: ${{ secrets.FUNCTIONAPP_PUBLISH_PROFILE }}
     
     
